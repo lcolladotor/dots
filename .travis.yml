@@ -20,7 +20,7 @@ install:
   - chmod +x $HOME/pandoc/pandoc
   - pandoc --version
   # Install bioc deps
-  - ./pkg-build.sh install_bioc_deps
+  - ./pkg-build.sh install_deps
  
 script:
 #  - ./travis-tool.sh run_tests

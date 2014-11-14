@@ -6,7 +6,7 @@ Date: 2014-11-13
 Authors@R: person("Leonardo", "Collado-Torres", role = c("aut", "cre"),
     email = "lcollado@jhu.edu")
 Depends:
-    R(>= 3.0.3)
+    R(>= 3.1.0)
 Suggests:
     devtools (>= 1.6),
     knitcitations (>= 1.0.1),

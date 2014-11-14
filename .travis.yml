@@ -43,7 +43,6 @@ notifications:
 
 env:
   matrix:
-    - RVERSION=3.0.3
     - RVERSION=3.1.0
     - RVERSION=3.1.1
     - RVERSION=3.1.2

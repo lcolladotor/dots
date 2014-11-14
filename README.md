@@ -5,7 +5,7 @@ Simplify your `R` functions by using the `...` argument to reduce the complexity
 
 # Installation instructions
 
-Get R 3.0.3 or newer from [CRAN](http://cran.r-project.org/).
+Get R 3.1.0 or newer from [CRAN](http://cran.r-project.org/).
 
 ```R
 ## If needed

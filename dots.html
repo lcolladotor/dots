@@ -872,20 +872,23 @@
 <h1>Introduction to <code>dots</code></h1>
 <p>If you wish, you can view this vignette online <a href="http://lcolladotor.github.io/dots/">here</a>.</p>
 <h1>Overview</h1>
-<p><code>dots</code> <a id='cite-dots'></a>(<a href='https://github.com/lcolladotor/dots'>Collado-Torres, 2014</a>) is a simple package that helps you simplify your function definitions by using the <code>...</code> arguments. This reduces the complexity a new user of your package will face when reading its documentation. At the same time, <code>dots</code> allows you to define advanced arguments which you can then define inside your function. Experienced users will be able to use them thus controlling those fine parameters most users do not need.</p>
+<p><code>dots</code> <a id='cite-dots'></a>(<a href='https://github.com/lcolladotor/dots'>Collado-Torres, 2014</a>) is a simple package that helps you simplify your function definitions by using the <code>...</code> arguments. This reduces the complexity a new user of your package will face when reading its documentation. At the same time, <code>dots</code> allows you to define advanced arguments which you can then define inside your functions. Experienced users will be able to use them thus controlling those fine parameters most users do not need.</p>
 <h2>dots()</h2>
 <p>The main function in this package is <code>dots()</code>. It will look inside <code>...</code> to see if <code>name</code> has been used. If it has, it will return its value. Otherwise, it returns a default <code>value</code>.</p>
 <div class="row">
 <button class="source R toggle btn btn-xs btn-primary">
 <span class="glyphicon glyphicon-chevron-down"></span> R source
 </button>
-<pre style=""><code class="source r">library('dots')</code></pre>
+<pre style=""><code class="source r">## Load the library
+library('dots')</code></pre>
 </div>
 <div class="row">
 <button class="source R toggle btn btn-xs btn-primary">
 <span class="glyphicon glyphicon-chevron-down"></span> R source
 </button>
-<pre style=""><code class="source r">dots</code></pre>
+<pre style=""><code class="source r">## Explore code
+## Alias: advanced...()
+dots</code></pre>
 <button class="output R toggle btn btn-xs btn-success">
 <span class="glyphicon glyphicon-chevron-up"></span> R output
 </button>
@@ -915,6 +918,8 @@
     ## reports (controlled by the 'verbose' argument)
     
     #' @param verbose Controls whether to print status reports or not.
+    #' Use value from global 'verbose' option if available. Otherwise, use 
+    #' \code{FALSE}
     verbose <- dots('verbose', getOption('verbose', FALSE), ...)
     if(verbose)
         message(paste(Sys.time(), 'myFun: performing analysis'))
@@ -933,12 +938,12 @@ myFun(1:10)</code></pre>
 <button class="source R toggle btn btn-xs btn-primary">
 <span class="glyphicon glyphicon-chevron-down"></span> R source
 </button>
-<pre style=""><code class="source r">## Experience user wants to print status reports
+<pre style=""><code class="source r">## Experienced user wants to print status reports
 myFun(1:10, verbose = TRUE)</code></pre>
 <button class="message R toggle btn btn-xs btn-info">
 <span class="glyphicon glyphicon-chevron-down"></span> R message
 </button>
-<pre style=""><code class="message r">## 2014-11-13 19:45:16 myFun: performing analysis
+<pre style=""><code class="message r">## 2014-11-14 00:38:47 myFun: performing analysis
 </code></pre>
 <button class="output R toggle btn btn-xs btn-success">
 <span class="glyphicon glyphicon-chevron-down"></span> R output
@@ -946,9 +951,9 @@ myFun(1:10, verbose = TRUE)</code></pre>
 <pre style=""><code class="output r">##  [1]  1  2  3  4  5  6  7  8  9 10
 </code></pre>
 </div>
-<p>Ok, this is an example and there are really only two arguments but in practice things can get complicated fast and soon you might find yourself with functions that have 10 or more arguments and need to cut it down.</p>
-<p>Note that if you are using the same advanced argument inside several functions, you might want to consider using the function <code>getOption()</code>.</p>
-<p>We highly recommend documenting any advanced arguments using <code>roxygen2</code> tags inside the source code so experienced users can understand the code. We also recommend explaining them in your package vignette at the section for advanced users.</p>
+<p>Ok, this is an example and there are really only two arguments but in practice things can get complicated fast. As a developer, soon you might find yourself with functions that have 10 or more arguments and need to cut the list down to promote friendliness and usability of your code.</p>
+<p>Note that if you are using the same advanced argument inside several functions, you might want to consider using the function <code>getOption()</code>. It's useful for users who want to set global options and don't want to specify them for every single function call.</p>
+<p>We highly recommend documenting any advanced arguments using <a href="http://cran.r-project.org/web/packages/roxygen2/index.html">roxygen2</a> tags inside the source code so experienced users can understand the code. We also recommend explaining these advanced arguments in your package vignette at the section targeting advanced users.</p>
 <p>That is, we expect experienced users to be able to dig into either the source code and/or find the appropriate docs section. As a package developer you have to give them a place to find such documentation.</p>
 <h2>formal_call()</h2>
 <p>Once you start using the <code>...</code> argument, you will soon find use cases where you are using <code>...</code> for several functions, but then some of them might complain when <code>...</code> contains an argument they don't use. In such scenarios you will want to run the function using some key arguments, remaining arguments from <code>...</code> that the function was defined to use, and drop the unwanted arguments in <code>...</code>.</p>
@@ -957,7 +962,9 @@ myFun(1:10, verbose = TRUE)</code></pre>
 <button class="source R toggle btn btn-xs btn-primary">
 <span class="glyphicon glyphicon-chevron-down"></span> R source
 </button>
-<pre style=""><code class="source r">formal_call</code></pre>
+<pre style=""><code class="source r">## Explore source
+## Alias: formalCall()
+formal_call</code></pre>
 <button class="output R toggle btn btn-xs btn-success">
 <span class="glyphicon glyphicon-chevron-up"></span> R output
 </button>
@@ -982,7 +989,8 @@ myFun(1:10, verbose = TRUE)</code></pre>
 ## <environment: namespace:dots>
 </code></pre>
 </div>
-<p>The following example shows how you can use it inside your functions.</p>
+<h3>Basic example</h3>
+<p>The following example shows how you can use <code>formal_call()</code> inside your functions. First, lets try a simple function that will return the identity of the maximum value of a vector <code>x</code>.</p>
 <div class="row">
 <button class="source R toggle btn btn-xs btn-primary">
 <span class="glyphicon glyphicon-chevron-down"></span> R source
@@ -999,7 +1007,7 @@ myFunBroken(1:10)</code></pre>
 <pre style=""><code class="output r">## [1] 10
 </code></pre>
 </div>
-<p>As is, the code above will break.</p>
+<p>That worked because we are not using the <code>...</code> argument. However, as is the code will break when using <code>...</code> because <code>identity()</code> does not have have other arguments defined.</p>
 <div class="row">
 <button class="source R toggle btn btn-xs btn-primary">
 <span class="glyphicon glyphicon-chevron-down"></span> R source
@@ -1012,7 +1020,8 @@ myFunBroken(1:10, 11:20)</code></pre>
 <button class="source R toggle btn btn-xs btn-primary">
 <span class="glyphicon glyphicon-chevron-down"></span> R source
 </button>
-<pre style=""><code class="source r">myFunFixed <- function(x, ...) {
+<pre style=""><code class="source r">## Fix code using formal_call()
+myFunFixed <- function(x, ...) {
     formal_call(identity, x = max(x, ...), ...)
 }
 
@@ -1035,13 +1044,14 @@ myFunFixed(1:10, 11:20)</code></pre>
 </code></pre>
 </div>
 <p>In this particular example, you could dodge the problem by using <code>identity(x)</code> instead of <code>identity(x, ...)</code>. However, the illustrative use of <code>formal_call()</code> remains and there are more complicated cases where you will need to use it.</p>
-<p>In the following example we want a function that does things with <code>...</code> (in this case defines the <code>verbose</code> argument) and then pass it to <code>plot()</code>.</p>
-<p>Simply using <code>dots()</code> is not enough as <code>plot()</code> will complain that <code>verbose</code> is not a graphical parameter.</p>
+<h3>Complex example</h3>
+<p>In the following example we want a function that does things with <code>...</code> (in this case, it defines the <code>verbose</code> argument) and then pass it to <code>plot()</code>. Simply using <code>dots()</code> is not enough as <code>plot()</code> will complain that <code>verbose</code> is not a graphical parameter.</p>
 <div class="row">
 <button class="source R toggle btn btn-xs btn-primary">
 <span class="glyphicon glyphicon-chevron-down"></span> R source
 </button>
-<pre style=""><code class="source r">funkyPlot <- function(x, y, ...) {
+<pre style=""><code class="source r">## A more complicated example
+funkyPlot <- function(x, y, ...) {
     verbose <- dots('verbose', getOption('verbose', FALSE), ...)
     if(verbose)
         message(paste(Sys.time(), 'funkyPlot: getting ready to roll'))
@@ -1053,7 +1063,7 @@ tryCatch(funkyPlot(1:10, 10:1, verbose = TRUE, xlab = 'Data (units)'), warning =
 <button class="message R toggle btn btn-xs btn-info">
 <span class="glyphicon glyphicon-chevron-down"></span> R message
 </button>
-<pre style=""><code class="message r">## 2014-11-13 19:45:16 funkyPlot: getting ready to roll
+<pre style=""><code class="message r">## 2014-11-14 00:38:47 funkyPlot: getting ready to roll
 </code></pre>
 <div class="row">
 <div class="col-md-offset-3 col-md-6">
@@ -1072,7 +1082,8 @@ tryCatch(funkyPlot(1:10, 10:1, verbose = TRUE, xlab = 'Data (units)'), warning =
 <button class="source R toggle btn btn-xs btn-primary">
 <span class="glyphicon glyphicon-chevron-down"></span> R source
 </button>
-<pre style=""><code class="source r">funkyPlot2 <- function(x, y, ...) {
+<pre style=""><code class="source r">## Use 'xlab'
+funkyPlot2 <- function(x, y, ...) {
     verbose <- dots('verbose', getOption('verbose', FALSE), ...)
     if(verbose)
         message(paste(Sys.time(), 'funkyPlot: getting ready to roll'))
@@ -1080,11 +1091,12 @@ tryCatch(funkyPlot(1:10, 10:1, verbose = TRUE, xlab = 'Data (units)'), warning =
     formal_call(plot, x = x, y = y, ..., formalCallUse = list(xlab = xlab))
 }
 
+## Works now =)
 funkyPlot2(1:10, 10:1, verbose = TRUE, xlab = 'Data (units)')</code></pre>
 <button class="message R toggle btn btn-xs btn-info">
 <span class="glyphicon glyphicon-chevron-down"></span> R message
 </button>
-<pre style=""><code class="message r">## 2014-11-13 19:45:16 funkyPlot: getting ready to roll
+<pre style=""><code class="message r">## 2014-11-14 00:38:47 funkyPlot: getting ready to roll
 </code></pre>
 <div class="row">
 <div class="col-md-offset-3 col-md-6">
@@ -1097,7 +1109,8 @@ funkyPlot2(1:10, 10:1, verbose = TRUE, xlab = 'Data (units)')</code></pre>
 <pre style=""><code class="output r">## NULL
 </code></pre>
 </div>
-<p>Now, you want to do this for a small set of parameters, but in the case of <code>plot()</code> there are tons of them. If you knew for certain that the other functions inside yours only use a small number of arguments passed through <code>...</code> (<code>verbose</code> in our example), you can eliminate them from <code>...</code> yourself.</p>
+<p>If you have a small number of advanced arguments you want users to be able to use, this approach will work. But in the case of <code>plot()</code> there are tons of graphical parameters that we want users to be able to use.</p>
+<p>If you knew for certain that the other functions inside yours only use a small number of arguments passed through <code>...</code> (<code>verbose</code> in our example), you can eliminate them from <code>...</code> yourself and pass them to <code>formalCallUse</code>.</p>
 <div class="row">
 <button class="source R toggle btn btn-xs btn-primary">
 <span class="glyphicon glyphicon-chevron-down"></span> R source
@@ -1108,15 +1121,21 @@ funkyPlot3 <- function(x, y, ...) {
     verbose <- dots('verbose', getOption('verbose', FALSE), ...)
     if(verbose)
         message(paste(Sys.time(), 'funkyPlot: getting ready to roll'))
+    
+    ## Drop 'verbose' from ...
     use <- list(...)
     use <- use[!names(use) == 'verbose']
+    
+    ## Call plot. Note that we are not passing ... anymore.
     formal_call(plot, x = x, y = y, formalCallUse = use)
 }
+
+## Works with more graphical parameters
 funkyPlot3(1:10, 10:1, verbose = TRUE, xlab = 'Data (units)', ylab = 'Success', main = 'Complicated example')</code></pre>
 <button class="message R toggle btn btn-xs btn-info">
 <span class="glyphicon glyphicon-chevron-down"></span> R message
 </button>
-<pre style=""><code class="message r">## 2014-11-13 19:45:16 funkyPlot: getting ready to roll
+<pre style=""><code class="message r">## 2014-11-14 00:38:47 funkyPlot: getting ready to roll
 </code></pre>
 <div class="row">
 <div class="col-md-offset-3 col-md-6">
@@ -1167,7 +1186,7 @@ knit('dots.Rmd', tangle = TRUE)</code></pre>
 <button class="output R toggle btn btn-xs btn-success">
 <span class="glyphicon glyphicon-chevron-down"></span> R output
 </button>
-<pre style=""><code class="output r">## [1] "2014-11-13 19:45:16 EST"
+<pre style=""><code class="output r">## [1] "2014-11-14 00:38:47 EST"
 </code></pre>
 </div>
 <p>Wallclock time spent generating the vignette.</p>
@@ -1175,7 +1194,7 @@ knit('dots.Rmd', tangle = TRUE)</code></pre>
 <button class="output R toggle btn btn-xs btn-success">
 <span class="glyphicon glyphicon-chevron-down"></span> R output
 </button>
-<pre style=""><code class="output r">## Time difference of 1.729 secs
+<pre style=""><code class="output r">## Time difference of 1.679 secs
 </code></pre>
 </div>
 <p><code>R</code> session information.</p>
@@ -1208,7 +1227,7 @@ knit('dots.Rmd', tangle = TRUE)</code></pre>
 ##  bibtex           0.3.6    2013-07-29 CRAN (R 3.2.0)                           
 ##  devtools       * 1.6.1    2014-10-07 CRAN (R 3.2.0)                           
 ##  digest           0.6.4    2013-12-03 CRAN (R 3.2.0)                           
-##  dots           * 1.0.0    2014-11-14 Github (lcolladotor/dots@05c954f)        
+##  dots           * 1.0.0    2014-11-14 Github (lcolladotor/dots@ab7efed)        
 ##  evaluate         0.5.5    2014-04-29 CRAN (R 3.2.0)                           
 ##  formatR          1.0      2014-08-25 CRAN (R 3.2.0)                           
 ##  htmltools        0.2.6    2014-09-08 CRAN (R 3.2.0)                           

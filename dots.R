@@ -26,11 +26,14 @@ names(bib) <- c('knitcitations', 'dots', 'knitrBootstrap',
     'knitr', 'rmarkdown')
 
 
-## ------------------------------------------------------------------------
+## ----'library'-----------------------------------------------------------
+## Load the library
 library('dots')
 
 
 ## ----'dotsCode', bootstrap.show.output = FALSE---------------------------
+## Explore code
+## Alias: advanced...()
 dots
 
 
@@ -42,6 +45,8 @@ myFun <- function(x, ...) {
     ## reports (controlled by the 'verbose' argument)
     
     #' @param verbose Controls whether to print status reports or not.
+    #' Use value from global 'verbose' option if available. Otherwise, use 
+    #' \code{FALSE}
     verbose <- dots('verbose', getOption('verbose', FALSE), ...)
     if(verbose)
         message(paste(Sys.time(), 'myFun: performing analysis'))
@@ -53,11 +58,13 @@ myFun <- function(x, ...) {
 ## Lets use it now
 myFun(1:10)
 
-## Experience user wants to print status reports
+## Experienced user wants to print status reports
 myFun(1:10, verbose = TRUE)
 
 
 ## ----'formalCallCode', bootstrap.show.output = FALSE---------------------
+## Explore source
+## Alias: formalCall()
 formal_call
 
 
@@ -76,7 +83,7 @@ myFunBroken(1:10)
 
 
 ## ----'formalFixed'-------------------------------------------------------
-
+## Fix code using formal_call()
 myFunFixed <- function(x, ...) {
     formal_call(identity, x = max(x, ...), ...)
 }
@@ -89,6 +96,7 @@ myFunFixed(1:10, 11:20)
 
 
 ## ----'funkyPlot'---------------------------------------------------------
+## A more complicated example
 funkyPlot <- function(x, y, ...) {
     verbose <- dots('verbose', getOption('verbose', FALSE), ...)
     if(verbose)
@@ -101,6 +109,7 @@ tryCatch(funkyPlot(1:10, 10:1, verbose = TRUE, xlab = 'Data (units)'), warning =
 
 
 ## ----'funkyPlot2'--------------------------------------------------------
+## Use 'xlab'
 funkyPlot2 <- function(x, y, ...) {
     verbose <- dots('verbose', getOption('verbose', FALSE), ...)
     if(verbose)
@@ -109,6 +118,7 @@ funkyPlot2 <- function(x, y, ...) {
     formal_call(plot, x = x, y = y, ..., formalCallUse = list(xlab = xlab))
 }
 
+## Works now =)
 funkyPlot2(1:10, 10:1, verbose = TRUE, xlab = 'Data (units)')
 
 
@@ -119,10 +129,16 @@ funkyPlot3 <- function(x, y, ...) {
     verbose <- dots('verbose', getOption('verbose', FALSE), ...)
     if(verbose)
         message(paste(Sys.time(), 'funkyPlot: getting ready to roll'))
+    
+    ## Drop 'verbose' from ...
     use <- list(...)
     use <- use[!names(use) == 'verbose']
+    
+    ## Call plot. Note that we are not passing ... anymore.
     formal_call(plot, x = x, y = y, formalCallUse = use)
 }
+
+## Works with more graphical parameters
 funkyPlot3(1:10, 10:1, verbose = TRUE, xlab = 'Data (units)', ylab = 'Success', main = 'Complicated example')
 
 

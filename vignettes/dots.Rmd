@@ -50,19 +50,22 @@ names(bib) <- c('knitcitations', 'dots', 'knitrBootstrap',
 # Overview
 
 
-`dots` `r citep(bib[['dots']])` is a simple package that helps you simplify your function definitions by using the `...` arguments. This reduces the complexity a new user of your package will face when reading its documentation. At the same time, `dots` allows you to define advanced arguments which you can then define inside your function. Experienced users will be able to use them thus controlling those fine parameters most users do not need.
+`dots` `r citep(bib[['dots']])` is a simple package that helps you simplify your function definitions by using the `...` arguments. This reduces the complexity a new user of your package will face when reading its documentation. At the same time, `dots` allows you to define advanced arguments which you can then define inside your functions. Experienced users will be able to use them thus controlling those fine parameters most users do not need.
 
 
 ## dots()
 
 The main function in this package is `dots()`.  It will look inside `...` to see if `name` has been used. If it has, it will return its value. Otherwise, it returns a default `value`.
 
-```{r}
+```{r 'library'}
+## Load the library
 library('dots')
 ```
 
 
 ```{r 'dotsCode', bootstrap.show.output = FALSE}
+## Explore code
+## Alias: advanced...()
 dots
 ```
 
@@ -79,6 +82,8 @@ myFun <- function(x, ...) {
     ## reports (controlled by the 'verbose' argument)
     
     #' @param verbose Controls whether to print status reports or not.
+    #' Use value from global 'verbose' option if available. Otherwise, use 
+    #' \code{FALSE}
     verbose <- dots('verbose', getOption('verbose', FALSE), ...)
     if(verbose)
         message(paste(Sys.time(), 'myFun: performing analysis'))
@@ -90,16 +95,16 @@ myFun <- function(x, ...) {
 ## Lets use it now
 myFun(1:10)
 
-## Experience user wants to print status reports
+## Experienced user wants to print status reports
 myFun(1:10, verbose = TRUE)
 ```
 
-Ok, this is an example and there are really only two arguments but in practice things can get complicated fast and soon you might find yourself with functions that have 10 or more arguments and need to cut it down.
+Ok, this is an example and there are really only two arguments but in practice things can get complicated fast. As a developer, soon you might find yourself with functions that have 10 or more arguments and need to cut the list down to promote friendliness and usability of your code.
 
 
-Note that if you are using the same advanced argument inside several functions, you might want to consider using the function `getOption()`.
+Note that if you are using the same advanced argument inside several functions, you might want to consider using the function `getOption()`. It's useful for users who want to set global options and don't want to specify them for every single function call.
 
-We highly recommend documenting any advanced arguments using `roxygen2` tags inside the source code so experienced users can understand the code. We also recommend explaining them in your package vignette at the section for advanced users.
+We highly recommend documenting any advanced arguments using [roxygen2](http://cran.r-project.org/web/packages/roxygen2/index.html) tags inside the source code so experienced users can understand the code. We also recommend explaining these advanced arguments in your package vignette at the section targeting advanced users.
 
 That is, we expect experienced users to be able to dig into either the source code and/or find the appropriate docs section. As a package developer you have to give them a place to find such documentation.
 
@@ -110,10 +115,14 @@ Once you start using the `...` argument, you will soon find use cases where you 
 That's where `formal_call()` comes into play.
 
 ```{r 'formalCallCode', bootstrap.show.output = FALSE}
+## Explore source
+## Alias: formalCall()
 formal_call
 ```
 
-The following example shows how you can use it inside your functions.
+### Basic example
+
+The following example shows how you can use `formal_call()` inside your functions. First, lets try a simple function that will return the identity of the maximum value of a vector `x`.
 
 ```{r 'formalCodeExample'}
 myFunBroken <- function(x, ...) {
@@ -124,7 +133,7 @@ myFunBroken <- function(x, ...) {
 myFunBroken(1:10)
 ```
 
-As is, the code above will break.
+That worked because we are not using the `...` argument. However, as is the code will break when using `...` because `identity()` does not have have other arguments defined.
 
 ```{r 'formalBroken', eval = FALSE}
 ## Breaks when you use ...
@@ -134,7 +143,7 @@ myFunBroken(1:10, 11:20)
 We can fix the broken code by using `formal_call()` as shown below.
 
 ```{r 'formalFixed'}
-
+## Fix code using formal_call()
 myFunFixed <- function(x, ...) {
     formal_call(identity, x = max(x, ...), ...)
 }
@@ -148,11 +157,12 @@ myFunFixed(1:10, 11:20)
 
 In this particular example, you could dodge the problem by using `identity(x)` instead of `identity(x, ...)`. However, the illustrative use of `formal_call()` remains and there are more complicated cases where you will need to use it.
 
-In the following example we want a function that does things with `...` (in this case defines the `verbose` argument) and then pass it to `plot()`. 
+### Complex example
 
-Simply using `dots()` is not enough as `plot()` will complain that `verbose` is not a graphical parameter.
+In the following example we want a function that does things with `...` (in this case, it defines the `verbose` argument) and then pass it to `plot()`. Simply using `dots()` is not enough as `plot()` will complain that `verbose` is not a graphical parameter.
 
 ```{r 'funkyPlot'}
+## A more complicated example
 funkyPlot <- function(x, y, ...) {
     verbose <- dots('verbose', getOption('verbose', FALSE), ...)
     if(verbose)
@@ -170,6 +180,7 @@ Below we do so only for the `xlab` graphical parameter.
 
 
 ```{r 'funkyPlot2'}
+## Use 'xlab'
 funkyPlot2 <- function(x, y, ...) {
     verbose <- dots('verbose', getOption('verbose', FALSE), ...)
     if(verbose)
@@ -178,10 +189,13 @@ funkyPlot2 <- function(x, y, ...) {
     formal_call(plot, x = x, y = y, ..., formalCallUse = list(xlab = xlab))
 }
 
+## Works now =)
 funkyPlot2(1:10, 10:1, verbose = TRUE, xlab = 'Data (units)')
 ```
 
-Now, you want to do this for a small set of parameters, but in the case of `plot()` there are tons of them. If you knew for certain that the other functions inside yours only use a small number of arguments passed through `...` (`verbose` in our example), you can eliminate them from `...` yourself.
+If you have a small number of advanced arguments you want users to be able to use, this approach will work. But in the case of `plot()` there are tons of graphical parameters that we want users to be able to use. 
+
+If you knew for certain that the other functions inside yours only use a small number of arguments passed through `...` (`verbose` in our example), you can eliminate them from `...` yourself and pass them to `formalCallUse`.
 
 ```{r 'funkyPlot3'}
 ## If we knew for sure that we only want to exclude 'verbose' from ... before
@@ -190,10 +204,16 @@ funkyPlot3 <- function(x, y, ...) {
     verbose <- dots('verbose', getOption('verbose', FALSE), ...)
     if(verbose)
         message(paste(Sys.time(), 'funkyPlot: getting ready to roll'))
+    
+    ## Drop 'verbose' from ...
     use <- list(...)
     use <- use[!names(use) == 'verbose']
+    
+    ## Call plot. Note that we are not passing ... anymore.
     formal_call(plot, x = x, y = y, formalCallUse = use)
 }
+
+## Works with more graphical parameters
 funkyPlot3(1:10, 10:1, verbose = TRUE, xlab = 'Data (units)', ylab = 'Success', main = 'Complicated example')
 ```
 

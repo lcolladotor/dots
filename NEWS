@@ -1,0 +1,8 @@
+CHANGES IN VERSION 1.0.0
+------------------------
+
+NEW FEATURES
+
+    o Added dots() and its alias advanced...().
+    o Added formal_call() and its alias formalCall().
+    o Added a vignette describing how to use these functions.

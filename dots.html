@@ -943,7 +943,7 @@ myFun(1:10, verbose = TRUE)</code></pre>
 <button class="message R toggle btn btn-xs btn-info">
 <span class="glyphicon glyphicon-chevron-down"></span> R message
 </button>
-<pre style=""><code class="message r">## 2014-11-14 00:38:47 myFun: performing analysis
+<pre style=""><code class="message r">## 2014-11-14 00:54:16 myFun: performing analysis
 </code></pre>
 <button class="output R toggle btn btn-xs btn-success">
 <span class="glyphicon glyphicon-chevron-down"></span> R output
@@ -1063,7 +1063,7 @@ tryCatch(funkyPlot(1:10, 10:1, verbose = TRUE, xlab = 'Data (units)'), warning =
 <button class="message R toggle btn btn-xs btn-info">
 <span class="glyphicon glyphicon-chevron-down"></span> R message
 </button>
-<pre style=""><code class="message r">## 2014-11-14 00:38:47 funkyPlot: getting ready to roll
+<pre style=""><code class="message r">## 2014-11-14 00:54:16 funkyPlot: getting ready to roll
 </code></pre>
 <div class="row">
 <div class="col-md-offset-3 col-md-6">
@@ -1096,7 +1096,7 @@ funkyPlot2(1:10, 10:1, verbose = TRUE, xlab = 'Data (units)')</code></pre>
 <button class="message R toggle btn btn-xs btn-info">
 <span class="glyphicon glyphicon-chevron-down"></span> R message
 </button>
-<pre style=""><code class="message r">## 2014-11-14 00:38:47 funkyPlot: getting ready to roll
+<pre style=""><code class="message r">## 2014-11-14 00:54:16 funkyPlot: getting ready to roll
 </code></pre>
 <div class="row">
 <div class="col-md-offset-3 col-md-6">
@@ -1135,7 +1135,7 @@ funkyPlot3(1:10, 10:1, verbose = TRUE, xlab = 'Data (units)', ylab = 'Success', 
 <button class="message R toggle btn btn-xs btn-info">
 <span class="glyphicon glyphicon-chevron-down"></span> R message
 </button>
-<pre style=""><code class="message r">## 2014-11-14 00:38:47 funkyPlot: getting ready to roll
+<pre style=""><code class="message r">## 2014-11-14 00:54:16 funkyPlot: getting ready to roll
 </code></pre>
 <div class="row">
 <div class="col-md-offset-3 col-md-6">
@@ -1148,7 +1148,8 @@ funkyPlot3(1:10, 10:1, verbose = TRUE, xlab = 'Data (units)', ylab = 'Success', 
 <pre style=""><code class="output r">## NULL
 </code></pre>
 </div>
-<p>So for these very complicated use cases, <code>formalCallUse</code> can help you when you either want to make sure you are supplying a small set of arguments or if you have a small set you want to exclude. Cases where there are many arguments to either exclude or supply.</p>
+<p>So for these very complicated use cases, <code>formalCallUse</code> can help you when you either want to make sure you are supplying a small set of arguments or if you have a small set you want to exclude.</p>
+<p>Cases where there are many arguments to either exclude or supply are nasty either way.</p>
 <h1>Learn more</h1>
 <p>If you want to check other examples using <code>dots()</code>, check the functions <code>last()</code> and <code>recursive_last()</code>.</p>
 <p>You can also see how these functions are used in packages such as <code>derfinder</code>: <a href="http://www.bioconductor.org/packages/release/bioc/html/derfinder.html">Biconductor page</a>, <a href="https://github.com/lcolladotor/derfinder">GitHub code</a>.</p>
@@ -1186,7 +1187,7 @@ knit('dots.Rmd', tangle = TRUE)</code></pre>
 <button class="output R toggle btn btn-xs btn-success">
 <span class="glyphicon glyphicon-chevron-down"></span> R output
 </button>
-<pre style=""><code class="output r">## [1] "2014-11-14 00:38:47 EST"
+<pre style=""><code class="output r">## [1] "2014-11-14 00:54:16 EST"
 </code></pre>
 </div>
 <p>Wallclock time spent generating the vignette.</p>
@@ -1194,7 +1195,7 @@ knit('dots.Rmd', tangle = TRUE)</code></pre>
 <button class="output R toggle btn btn-xs btn-success">
 <span class="glyphicon glyphicon-chevron-down"></span> R output
 </button>
-<pre style=""><code class="output r">## Time difference of 1.679 secs
+<pre style=""><code class="output r">## Time difference of 1.58 secs
 </code></pre>
 </div>
 <p><code>R</code> session information.</p>
@@ -1227,7 +1228,7 @@ knit('dots.Rmd', tangle = TRUE)</code></pre>
 ##  bibtex           0.3.6    2013-07-29 CRAN (R 3.2.0)                           
 ##  devtools       * 1.6.1    2014-10-07 CRAN (R 3.2.0)                           
 ##  digest           0.6.4    2013-12-03 CRAN (R 3.2.0)                           
-##  dots           * 1.0.0    2014-11-14 Github (lcolladotor/dots@ab7efed)        
+##  dots           * 1.0.0    2014-11-14 Github (lcolladotor/dots@a933540)        
 ##  evaluate         0.5.5    2014-04-29 CRAN (R 3.2.0)                           
 ##  formatR          1.0      2014-08-25 CRAN (R 3.2.0)                           
 ##  htmltools        0.2.6    2014-09-08 CRAN (R 3.2.0)                           

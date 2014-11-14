@@ -42,8 +42,13 @@ notifications:
     on_failure: change
 
 env:
-  global:
+  matrix:
+    - RVERSION=3.0.3
+    - RVERSION=3.1.0
+    - RVERSION=3.1.1
+    - RVERSION=3.1.2
     - RVERSION=devel
+  global:
     - R_BUILD_ARGS="--no-manual --no-resave-data"
     - R_CHECK_ARGS="--no-build-vignettes --no-manual --timings"
 #    - R_CHECK_TIME="TRUE"

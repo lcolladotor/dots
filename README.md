@@ -5,7 +5,7 @@ Simplify your `R` functions by using the `...` argument to reduce the complexity
 
 # Installation instructions
 
-Get R 3.1.2 or newer from [CRAN](http://cran.r-project.org/).
+Get R 3.0.3 or newer from [CRAN](http://cran.r-project.org/).
 
 ```R
 ## If needed
@@ -16,9 +16,9 @@ library('devtools')
 install_github('lcolladotor/dots')
 ```
 
-# Vignettes
+# Vignette
 
-The vignettes for this package can be viewed [here](http://lcolladotor.github.io/dots/).
+The vignette for this package can be viewed [here](http://lcolladotor.github.io/dots/).
 
 
 # Travis CI

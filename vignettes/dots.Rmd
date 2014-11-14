@@ -217,7 +217,9 @@ funkyPlot3 <- function(x, y, ...) {
 funkyPlot3(1:10, 10:1, verbose = TRUE, xlab = 'Data (units)', ylab = 'Success', main = 'Complicated example')
 ```
 
-So for these very complicated use cases, `formalCallUse` can help you when you either want to make sure you are supplying a small set of arguments or if you have a small set you want to exclude. Cases where there are many arguments to either exclude or supply.
+So for these very complicated use cases, `formalCallUse` can help you when you either want to make sure you are supplying a small set of arguments or if you have a small set you want to exclude.
+
+Cases where there are many arguments to either exclude or supply are nasty either way.
 
 # Learn more
 

@@ -1,5 +1,6 @@
 dots [![Build Status](https://travis-ci.org/lcolladotor/dots.svg?branch=master)](https://travis-ci.org/lcolladotor/dots)
 =========
+[![DOI](https://zenodo.org/badge/26607053.svg)](https://zenodo.org/badge/latestdoi/26607053)
 
 Simplify your `R` functions by using the `...` argument to reduce the complexity of the function calls. This will make your functions more user friendly, while `dots` allows you to specify advanced arguments the more experienced users can supply.
 
